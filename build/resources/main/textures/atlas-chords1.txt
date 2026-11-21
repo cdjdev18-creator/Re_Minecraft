@@ -8,3 +8,5 @@ cords reference: -Y down, Xrigt a la dereha>
 
 
 1,1 Bedrok(puede usarse como todas las caras de bloque)
+
+
