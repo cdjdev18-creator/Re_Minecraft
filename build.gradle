@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+application {
+    mainClass = 'com.reminecraft.Main'
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    lwjglVersion = '3.3.3'
+    lwjglNatives = 'natives-windows'
+}
+
+dependencies {
+    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+    implementation 'org.lwjgl:lwjgl'
+    implementation 'org.lwjgl:lwjgl-glfw'
+    implementation 'org.lwjgl:lwjgl-opengl'
+    implementation 'org.lwjgl:lwjgl-stb'
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.reminecraft.Main'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.register('copyJar', Copy) {
+    dependsOn jar
+    from jar.archiveFile
+    into 'exe'
+    rename { 'Re_Minecraft.jar' }
+}
+
+tasks.register('jpackage', Exec) {
+    dependsOn jar
+    def inputDir = file('build/libs')
+    def destDir = file('exe')
+    commandLine 'jpackage',
+        '--input', inputDir.absolutePath,
+        '--name', 'Re_Minecraft',
+        '--main-jar', jar.archiveFileName.get(),
+        '--main-class', 'com.reminecraft.Main',
+        '--type', 'app-image',
+        '--dest', destDir.absolutePath,
+        '--java-options', '-Dfile.encoding=UTF-8'
+    doFirst {
+        def out = file('exe/Re_Minecraft')
+        if (out.exists()) out.deleteDir()
+        destDir.mkdirs()
+    }
+}
+build.dependsOn jpackage

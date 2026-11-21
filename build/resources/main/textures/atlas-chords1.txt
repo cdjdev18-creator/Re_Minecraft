@@ -1,0 +1,10 @@
+
+cords reference: -Y down, Xrigt a la dereha>
+15 tex por 15
+
+0,0 Cesped, 0,2 Tierra capa de abajo(puede usarse como bloque tierra), 0,3 Cesped cara de los lados.
+0,1 Piedra(Puede Usase como todas las caras de el bloque)
+
+
+
+1,1 Bedrok(puede usarse como todas las caras de bloque)

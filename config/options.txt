@@ -1,0 +1,14 @@
+fullscreen=false
+resolution=1280x720
+masterVolume=1.0
+mouseSensitivity=0.5
+renderDistance=8
+vsync=true
+showFps=true
+debug=true
+quality=Media
+language=Español
+windowMode=Windowed
+musicVolume=1.0
+effectsVolume=1.0
+autoSave=true
